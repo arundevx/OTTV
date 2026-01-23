@@ -11,6 +11,26 @@ export interface TMDBMovie {
     release_date: string;
     genres: { id: number; name: string }[];
     runtime: number;
+    credits?: {
+        cast: TMDBActor[];
+        crew: TMDBCrew[];
+    };
+    production_countries?: { name: string }[];
+    spoken_languages?: { english_name: string }[];
+}
+
+export interface TMDBActor {
+    id: number;
+    name: string;
+    character: string;
+    profile_path: string | null;
+}
+
+export interface TMDBCrew {
+    id: number;
+    name: string;
+    job: string;
+    profile_path: string | null;
 }
 
 export async function fetchTMDBMovieByImdbId(imdbId: string): Promise<TMDBMovie | null> {
@@ -29,9 +49,9 @@ export async function fetchTMDBMovieByImdbId(imdbId: string): Promise<TMDBMovie 
         const movie = findData.movie_results?.[0];
         if (!movie) return null;
 
-        // 2. Fetch full movie details
+        // 2. Fetch full movie details with credits
         const detailRes = await fetch(
-            `${TMDB_BASE_URL}/movie/${movie.id}?api_key=${TMDB_API_KEY}&append_to_response=videos,images`
+            `${TMDB_BASE_URL}/movie/${movie.id}?api_key=${TMDB_API_KEY}&append_to_response=credits,videos,images`
         );
         return await detailRes.json();
     } catch (error) {
