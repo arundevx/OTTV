@@ -1,4 +1,7 @@
-# 🎬 OTTVirus - Premium Auto-Embed Streaming Engine
+<div align="center">
+
+# 🎬 OTTVirus
+### Premium Auto-Embed Streaming Engine
 
 ![OTTVirus Hero](https://github.com/arundevx/OTTV/blob/OTTV/public/OTTV-banner.png?raw=true)
 
@@ -8,6 +11,25 @@
 [![Performance](https://img.shields.io/badge/Performance-Optimized-orange?style=for-the-badge)](https://nextjs.org/)
 
 **OTTVirus** is a state-of-the-art, high-performance streaming engine built with **Next.js 15**. It delivers a premium cinematic experience with instant playback, multi-server redundancy, and intelligent metadata integration.
+
+</div>
+
+---
+
+## 📸 Experience the Magic
+
+<div align="center">
+  <p><b>Home UI: The Gateway to Cinema</b></p>
+  <img src="https://github.com/arundevx/OTTV/blob/OTTV/preview/home.png?raw=true" width="90%" style="border-radius: 20px; border: 1px solid #333;" />
+  <br/><br/>
+  
+  <p><b>Cinematic Details: Rich Metadata & Visuals</b></p>
+  <img src="https://github.com/arundevx/OTTV/blob/OTTV/preview/details_page_1.png?raw=true" width="90%" style="border-radius: 20px; border: 1px solid #333;" />
+  <br/><br/>
+  
+  <p><b>Multi-Server Player: Uninterrupted Streaming</b></p>
+  <img src="https://github.com/arundevx/OTTV/blob/OTTV/preview/player_view.png?raw=true" width="90%" style="border-radius: 20px; border: 1px solid #333;" />
+</div>
 
 ---
 
@@ -37,14 +59,6 @@
 - **Icons**: [Lucide React](https://lucide.dev/)
 - **Data Source**: [TMDB API](https://www.themoviedb.org/documentation/api)
 - **Streaming**: Multi-Provider Auto-Embed System
-
----
-
-## 📸 Preview
-
-| Home UI | Cinematic Details | Multi-Server Player |
-| :---: | :---: | :---: |
-| ![Home](https://github.com/arundevx/OTTV/blob/OTTV/preview/home.png?raw=true) | ![Details](https://github.com/arundevx/OTTV/blob/OTTV/preview/details_page_1.png?raw=true) | ![Player](https://github.com/arundevx/OTTV/blob/OTTV/preview/player_view.png?raw=true) |
 
 ---
 
@@ -107,4 +121,6 @@ The platform acts as a metadata engine and provides a user-friendly interface to
 
 ---
 
-Built with ❤️ by [Arun](https://github.com/arundevx) & **Antigravity AI**.
+<p align="center">
+  Built with ❤️ by <a href="https://github.com/arundevx">Arun</a>.
+</p>
