@@ -1,91 +1,110 @@
-# OTTVirus - A modern auto-embed streaming engine for movies & TV
+# 🎬 OTTVirus - Premium Auto-Embed Streaming Engine
 
 ![OTTVirus Hero](https://github.com/arundevx/OTTV/blob/OTTV/public/OTTV-banner.png?raw=true)
 
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![Performance](https://img.shields.io/badge/Performance-Optimized-orange?style=for-the-badge)](https://nextjs.org/)
 
-OTTVirus is a state-of-the-art OTT platform built with Next.js 15, offering a seamless and high-performance movie discovery and streaming experience. Featuring a dark cinematic theme, responsive design, and integration with TMDB for rich metadata.
+**OTTVirus** is a state-of-the-art, high-performance streaming engine built with **Next.js 15**. It delivers a premium cinematic experience with instant playback, multi-server redundancy, and intelligent metadata integration.
 
-## ✨ Features
+---
 
-- 🚀 **Next.js 15 App Router**: High-performance client-side routing and server-side rendering.
-- 🎬 **Rich Movie Metadata**: Full integration with TMDB API for cast, crew, ratings, and high-quality backdrops.
-- 🎥 **Intelligent Streaming Engine**: Responsive 16:9 player with auto-loading and fallback mechanisms.
-- 🔍 **Real-time Search**: Instant search with skeleton loaders and smart debouncer.
-- 📱 **Mobile First**: Fully responsive layout optimized for mobile, tablet, and desktop.
-- ⚡ **Global Preloader**: Custom premium route transition animations.
-- 🛡️ **Legal Compliance**: Strict adherence to non-piracy guidelines with clear disclaimers.
+## 🔥 Key Features
+
+### 💎 Cinematic Excellence
+- **Ultra-Modern UI**: Glassmorphism, velvet-dark themes, and high-fidelity animations.
+- **Rich Metadata**: Powered by **TMDB API**, providing high-res posters, backdrops, cast details, and crew info.
+- **Responsive Mastery**: Fluid performance across all devices—Mobile, Tablet, and Desktop.
+
+### 🎥 Multi-Server Engine
+- **Triple-Server Redundancy**: Choose between 3 different servers for the best streaming quality.
+- **Instant Switching**: Change servers on-the-fly without refreshing the page.
+- **Intelligent Loading**: Custom alerts and pre-loaders for a smooth buffering-free start.
+
+### 🚀 Speed & Reliability
+- **Smart Proxying**: Integrated AllOrigins proxy to bypass TMDB geo-restrictions and CORS issues.
+- **Proactive Caching**: 1-hour revalidation cycles for lightning-fast metadata loading.
+- **Fail-Fast Logic**: Intelligent timeout and fallback mechanisms for direct vs. proxy connections.
+
+---
 
 ## 🛠️ Tech Stack
 
-- **Framework**: Next.js 15 (App Router)
-- **Styling**: Tailwind CSS
-- **Icons**: Lucide React
-- **Metadata**: TMDB (The Movie Database) API
-- **Deployment**: Vercel / Docker
+- **Framework**: [Next.js 15](https://nextjs.org/) (App Router & Server Components)
+- **Styling**: [Tailwind CSS 3.4](https://tailwindcss.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Data Source**: [TMDB API](https://www.themoviedb.org/documentation/api)
+- **Streaming**: Multi-Provider Auto-Embed System
 
-## 📸 Screenshots
+---
 
-| Home Page | Movie Details | Mobile View |
+## 📸 Preview
+
+| Home UI | Cinematic Details | Multi-Server Player |
 | :---: | :---: | :---: |
-| ![Home](https://placehold.co/600x400/000000/FFFFFF/png?text=OTTVirus+Home) | ![Details](https://placehold.co/600x400/000000/FFFFFF/png?text=Rich+Movie+Details) | ![Mobile](https://placehold.co/300x600/000000/FFFFFF/png?text=Mobile+Optimized) |
+| ![Home](https://github.com/arundevx/OTTV/blob/OTTV/preview/home.png?raw=true) | ![Details](https://github.com/arundevx/OTTV/blob/OTTV/preview/details_page_1.png?raw=true) | ![Player](https://github.com/arundevx/OTTV/blob/OTTV/preview/player_view.png?raw=true) |
+
+---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-
-- Node.js 18.x or later
-- NPM or Bun
+- Node.js 18.17+ or later
+- A TMDB API Key ([Get it here](https://www.themoviedb.org/settings/api))
 
 ### Installation
-
-1. **Clone the repository**:
+1. **Clone & Enter**:
    ```bash
-   git clone https://github.com/your-repo/ottvirus.git
-   cd ottvirus
+   git clone https://github.com/arundevx/OTTV.git
+   cd OTTV
    ```
-
-2. **Install dependencies**:
+2. **Install Dependencies**:
    ```bash
    npm install
    ```
-
-3. **Set up Environment Variables**:
-   Create a `.env.local` file in the root directory:
+3. **Environment Setup**:
+   Create a `.env.local` file:
    ```env
-   TMDB_API_KEY=your_tmdb_api_key
-   TMDB_BASE_URL=https://api.themoviedb.org/3
+   # TMDB Configuration
+   TMDB_API_KEY=your_key_here
+   TMDB_ENABLE_PROXY=true # Set to true to bypass geo-blocks
+   
+   # Server Toggles
+   ENABLE_SERVER_1=true
+   ENABLE_SERVER_2=true
+   ENABLE_SERVER_3=true
+   
+   # Custom Server URLs (optional)
+   SERVER_2_URL=https://player.autoembed.cc/embed/movie/{id}
+   SERVER_3_URL=https://multiembed.mov/?video_id={id}
    ```
-
-4. **Run development server**:
+4. **Launch**:
    ```bash
    npm run dev
    ```
 
-5. **Build for production**:
-   ```bash
-   npm run build
-   ```
+---
 
-## 📂 Folder Structure
+## 📂 Folder Architecture
 
 ```text
 src/
-├── app/              # App Router pages and loading states
-├── components/       # Reusable UI components
-├── lib/              # API wrappers and utilities
-├── actions/          # Server actions for data fetching
-└── globals.css       # Global styles and tailwind directives
+├── app/              # Routes, Pages, and Layouts
+├── components/       # Premium UI components (Player, Search, etc.)
+├── lib/              # TMDB Library & Connectivity Logic
+└── globals.css       # Design Tokens & Global Styles
 ```
-
-## ⚖️ Legal Disclaimer
-
-**OTTVirus does not support or promote piracy in any form.**
-
-This application does not host, upload, or store any video files on its servers. All media content is fetched from third-party services and publicly available sources via standard embedding protocols. This project is intended for educational and informational purposes only.
 
 ---
 
-Built with ❤️ for Movie Lovers.
+## ⚖️ Legal Disclaimer
+
+**OTTVirus does not host or store any video content.**
+
+The platform acts as a metadata engine and provides a user-friendly interface to access publicly available third-party embedding services. Users are responsible for complying with local laws and regulations. Built for educational and research purposes.
+
+---
+
+Built with ❤️ by [Arun](https://github.com/arundevx) & **Antigravity AI**.
