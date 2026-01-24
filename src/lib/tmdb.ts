@@ -40,10 +40,9 @@ async function tmdbFetch(url: string, isProxy = false) {
     try {
         console.log(`[TMDB] Fetching (${isProxy ? 'Proxy' : 'Direct'}): ${url}`);
         const response = await fetch(url, {
-            cache: 'no-store',
-            next: { revalidate: 0 },
-            // Add a shorter timeout for direct calls to fail fast
-            signal: isProxy ? undefined : AbortSignal.timeout(5000)
+            next: { revalidate: 3600 }, // Cache for 1 hour
+            // Add a shorter timeout for direct calls to fail faster
+            signal: isProxy ? undefined : AbortSignal.timeout(3000)
         } as any);
 
         if (!response.ok) {

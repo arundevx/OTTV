@@ -1,6 +1,6 @@
-# OTTVirus - Premium Cinematic Streaming Experience
+# OTTVirus - A modern auto-embed streaming engine for movies & TV
 
-![OTTVirus Hero](https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80)
+![OTTVirus Hero](https://github.com/arundevx/OTTV/blob/OTTV/public/OTTV-banner.png?raw=true)
 
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
