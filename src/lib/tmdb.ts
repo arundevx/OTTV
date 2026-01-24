@@ -34,6 +34,8 @@ export interface TMDBCrew {
     profile_path: string | null;
 }
 
+const TMDB_ENABLE_PROXY = process.env.TMDB_ENABLE_PROXY === 'true';
+
 async function tmdbFetch(url: string, isProxy = false) {
     try {
         console.log(`[TMDB] Fetching (${isProxy ? 'Proxy' : 'Direct'}): ${url}`);
@@ -66,22 +68,28 @@ async function tmdbFetch(url: string, isProxy = false) {
 }
 
 async function tmdbRequest(endpoint: string) {
-    // 1. Try Direct
+    // Prepare URLs
     const directUrl = `${TMDB_DIRECT_BASE_URL}${endpoint}`;
-    let data = await tmdbFetch(directUrl, false);
-
-    if (data) return data;
-
-    // 2. Try Proxy
-    // We need to parse the base proxy URL to handle the nested query params correctly
     const proxyBase = TMDB_PROXY_BASE_URL.split('?url=')[0];
     const targetBase = TMDB_PROXY_BASE_URL.split('?url=')[1] || TMDB_DIRECT_BASE_URL;
-
     const fullTargetUrl = `${targetBase}${endpoint}`;
     const proxyUrl = `${proxyBase}?url=${encodeURIComponent(fullTargetUrl)}`;
 
-    console.log(`[TMDB] Falling back to proxy...`);
-    return await tmdbFetch(proxyUrl, true);
+    if (TMDB_ENABLE_PROXY) {
+        console.log(`[TMDB] Proxy is ENABLED via ENV, trying proxy first...`);
+        let data = await tmdbFetch(proxyUrl, true);
+        if (data) return data;
+
+        console.log(`[TMDB] Proxy failed, falling back to direct...`);
+        return await tmdbFetch(directUrl, false);
+    } else {
+        console.log(`[TMDB] Proxy is DISABLED via ENV, trying direct first...`);
+        let data = await tmdbFetch(directUrl, false);
+        if (data) return data;
+
+        console.log(`[TMDB] Direct failed, falling back to proxy...`);
+        return await tmdbFetch(proxyUrl, true);
+    }
 }
 
 export async function fetchTMDBMovieByImdbId(imdbId: string): Promise<TMDBMovie | null> {
