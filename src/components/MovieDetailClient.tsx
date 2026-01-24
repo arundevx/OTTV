@@ -25,6 +25,13 @@ interface MovieDetailClientProps {
     writers: any[];
     isKeyMissing: boolean;
     initialWatch: boolean;
+    serverConfig: {
+        server1: boolean;
+        server2: boolean;
+        server3: boolean;
+        server2Url: string;
+        server3Url: string;
+    };
 }
 
 export default function MovieDetailClient({
@@ -43,7 +50,8 @@ export default function MovieDetailClient({
     director,
     writers,
     isKeyMissing,
-    initialWatch
+    initialWatch,
+    serverConfig
 }: MovieDetailClientProps) {
     const [isWatching, setIsWatching] = useState(initialWatch);
     const playerRef = useRef<HTMLDivElement>(null);
@@ -172,7 +180,7 @@ export default function MovieDetailClient({
                             <span className="w-2 h-10 bg-red-600 rounded-full" />
                             <h2 className="text-4xl font-black uppercase tracking-tight">Cinema Engine</h2>
                         </div>
-                        <PlayerEmbed imdbId={imdbId} />
+                        <PlayerEmbed imdbId={imdbId} serverConfig={serverConfig} />
                         <div className="bg-white/5 border border-white/10 p-8 rounded-3xl text-sm text-gray-400 leading-relaxed backdrop-blur-md">
                             <p className="mb-4 font-black text-white uppercase tracking-[0.2em] text-xs">Streaming Intelligent Note:</p>
                             We recommend a high-speed fiber connection for 4K streaming. If you experience buffering, try pausing the video for a few seconds or switch to a different server. Our engine automatically optimizes playback for your device.

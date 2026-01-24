@@ -19,6 +19,15 @@ export default async function MoviePage({ params, searchParams }: MoviePageProps
     const movie = await fetchTMDBMovieByImdbId(imdbId);
     const isKeyMissing = !process.env.TMDB_API_KEY || process.env.TMDB_API_KEY === 'YOUR_TMDB_API_KEY_HERE';
 
+    // Server Configuration
+    const serverConfig = {
+        server1: process.env.ENABLE_SERVER_1 !== 'false', // Default true
+        server2: process.env.ENABLE_SERVER_2 === 'true',
+        server3: process.env.ENABLE_SERVER_3 === 'true',
+        server2Url: process.env.SERVER_2_URL || 'https://player.autoembed.cc/embed/movie/{id}',
+        server3Url: process.env.SERVER_3_URL || 'https://multiembed.mov/?video_id={id}',
+    };
+
     // Use TMDB data if available, otherwise use fallbacks from query params
     const displayTitle = movie?.title || (fallbackTitle as string) || 'Unknown Movie';
     const displayYear = movie?.release_date ? new Date(movie.release_date).getFullYear() : (fallbackYear as string) || 'N/A';
@@ -54,6 +63,7 @@ export default async function MoviePage({ params, searchParams }: MoviePageProps
             writers={writers}
             isKeyMissing={isKeyMissing}
             initialWatch={watch === 'true'}
+            serverConfig={serverConfig}
         />
     );
 }
