@@ -28,7 +28,7 @@
   <br/><br/>
   
   <p><b>Multi-Server Player: Uninterrupted Streaming</b></p>
-  <img src="https://github.com/arundevx/OTTV/blob/OTTV/preview/player_view.png?raw=true" width="90%" style="border-radius: 20px; border: 1px solid #333;" />
+  <img src="https://github.com/arundevx/OTTV/blob/OTTV/preview/player.png?raw=true" width="90%" style="border-radius: 20px; border: 1px solid #333;" />
 </div>
 
 ---
