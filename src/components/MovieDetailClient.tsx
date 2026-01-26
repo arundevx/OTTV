@@ -2,11 +2,12 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
-import { Star, Calendar, Clock, Play, Globe, Languages, Users } from 'lucide-react';
+import { Star, Calendar, Clock, Play, Globe, Languages, Users, Magnet, Download, Info } from 'lucide-react';
 import { getTMDBImageUrl } from '@/lib/tmdb';
 import PlayerEmbed from './PlayerEmbed';
 import Footer from './Footer';
 import DetailsHeader from './DetailsHeader';
+import { getTorrents, Torrent } from '@/app/actions/torrent';
 
 interface MovieDetailClientProps {
     imdbId: string;
@@ -54,7 +55,17 @@ export default function MovieDetailClient({
     serverConfig
 }: MovieDetailClientProps) {
     const [isWatching, setIsWatching] = useState(initialWatch);
+    const [torrents, setTorrents] = useState<Torrent[]>([]);
+    const [activeTorrentIndex, setActiveTorrentIndex] = useState(0);
     const playerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const fetchTorrents = async () => {
+            const data = await getTorrents(imdbId);
+            setTorrents(data);
+        };
+        fetchTorrents();
+    }, [imdbId]);
 
     const handleWatchNow = () => {
         setIsWatching(true);
@@ -181,6 +192,91 @@ export default function MovieDetailClient({
                             <h2 className="text-4xl font-black uppercase tracking-tight">Cinema Engine</h2>
                         </div>
                         <PlayerEmbed imdbId={imdbId} serverConfig={serverConfig} />
+
+                        {/* Download & Torrent Details Section */}
+                        {torrents.length > 0 && (
+                            <div className="flex flex-col gap-10 mt-12 animate-in fade-in slide-in-from-bottom-5 duration-700">
+                                {/* Magnet Buttons Container */}
+                                <div className="flex flex-col gap-6">
+                                    <div className="flex items-center gap-3">
+                                        <Magnet className="w-5 h-5 text-red-600" />
+                                        <h3 className="text-gray-500 font-bold uppercase tracking-widest text-xs">Direct Magnet Downloads</h3>
+                                    </div>
+                                    <div className="flex flex-wrap gap-4">
+                                        {torrents.map((torrent) => (
+                                            <a
+                                                key={`magnet-${torrent.hash}`}
+                                                href={`magnet:?xt=urn:btih:${torrent.hash}&dn=${encodeURIComponent(displayTitle)}&tr=udp://open.demonii.com:1337/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=p2p://74.82.196.179:6969/announce&tr=udp://tracker.leechers-paradise.org:6969`}
+                                                className="group relative flex items-center gap-4 bg-red-600 hover:bg-red-700 text-white min-w-[200px] px-8 py-4 rounded-2xl transition-all shadow-[0_15px_30px_-10px_rgba(220,38,38,0.4)] hover:scale-105 active:scale-95 border border-white/10"
+                                            >
+                                                <Magnet className="w-6 h-6 group-hover:animate-pulse" />
+                                                <div className="flex flex-col">
+                                                    <span className="text-lg font-black leading-tight uppercase tracking-tighter">{torrent.quality} MAGNET</span>
+                                                    <span className="text-[10px] font-bold opacity-70 uppercase tracking-widest">{torrent.size} • {torrent.type}</span>
+                                                </div>
+                                                <div className="absolute inset-0 rounded-2xl border-2 border-white/20 scale-110 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300" />
+                                            </a>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Quality Details Tabs */}
+                                <div className="border-t border-white/10 pt-10">
+                                    <div className="flex items-center gap-3 mb-6">
+                                        <Info className="w-5 h-5 text-red-600" />
+                                        <h3 className="text-gray-500 font-bold uppercase tracking-widest text-xs">Detailed Specifications</h3>
+                                    </div>
+                                    <div className="flex flex-wrap gap-3 mb-8 bg-white/5 p-2 rounded-2xl border border-white/10 w-fit">
+                                        {torrents.map((torrent, index) => (
+                                            <button
+                                                key={`tab-${torrent.hash}`}
+                                                onClick={() => setActiveTorrentIndex(index)}
+                                                className={`px-8 py-3 rounded-xl font-black text-sm transition-all border ${activeTorrentIndex === index
+                                                        ? 'bg-white text-black shadow-2xl border-white'
+                                                        : 'text-gray-400 hover:text-white hover:bg-white/5 border-transparent'
+                                                    }`}
+                                            >
+                                                {torrent.quality}
+                                            </button>
+                                        ))}
+                                    </div>
+
+                                    {/* Tab Body - File Details */}
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 animate-in fade-in slide-in-from-top-2 duration-300">
+                                        {[
+                                            { label: 'File Size', value: torrents[activeTorrentIndex].size, icon: Download },
+                                            { label: 'Seeds', value: torrents[activeTorrentIndex].seeds, icon: Users },
+                                            { label: 'Peers', value: torrents[activeTorrentIndex].peers, icon: Info },
+                                            { label: 'Quality', value: torrents[activeTorrentIndex].quality + ' ' + torrents[activeTorrentIndex].type.toUpperCase(), icon: Star },
+                                        ].map((item, i) => (
+                                            <div key={i} className="bg-white/5 border border-white/10 p-6 rounded-3xl backdrop-blur-xl group hover:border-red-600/50 transition-colors">
+                                                <div className="flex items-center gap-3 text-gray-400 mb-3">
+                                                    <item.icon className="w-4 h-4 text-red-600" />
+                                                    <span className="text-[10px] uppercase font-black tracking-[0.2em]">{item.label}</span>
+                                                </div>
+                                                <div className="text-2xl font-black text-white group-hover:text-red-500 transition-colors tracking-tight">{item.value}</div>
+                                            </div>
+                                        ))}
+
+                                        <div className="col-span-2 md:col-span-4 bg-white/5 border border-white/10 p-6 rounded-3xl backdrop-blur-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                            <div className="flex flex-col">
+                                                <span className="text-[10px] uppercase font-black tracking-[0.2em] text-gray-500 mb-2 flex items-center gap-2">
+                                                    <div className="w-1.5 h-1.5 bg-red-600 rounded-full animate-pulse" /> Content Hash
+                                                </span>
+                                                <span className="text-xs font-mono text-gray-400 break-all select-all hover:text-white transition-colors tracking-widest">{torrents[activeTorrentIndex].hash}</span>
+                                            </div>
+                                            <button
+                                                onClick={() => navigator.clipboard.writeText(torrents[activeTorrentIndex].hash)}
+                                                className="px-4 py-2 bg-white/5 hover:bg-white/10 text-[10px] font-black uppercase tracking-widest rounded-lg border border-white/10 transition-all w-fit"
+                                            >
+                                                Copy Hash
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
                         <div className="bg-white/5 border border-white/10 p-8 rounded-3xl text-sm text-gray-400 leading-relaxed backdrop-blur-md">
                             <p className="mb-4 font-black text-white uppercase tracking-[0.2em] text-xs">Streaming Intelligent Note:</p>
                             We recommend a high-speed fiber connection for 4K streaming. If you experience buffering, try pausing the video for a few seconds or switch to a different server. Our engine automatically optimizes playback for your device.
