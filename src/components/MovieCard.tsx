@@ -9,6 +9,28 @@ interface MovieCardProps {
 }
 
 export default function MovieCard({ movie }: MovieCardProps) {
+    const torrents = [...(movie.torrents || [])];
+
+    // Sort torrents to find the best quality
+    // 1. Higher resolution first (e.g. 2160p > 1080p > 720p)
+    // 2. If same resolution, bluray over web/others
+    const bestTorrent = torrents.sort((a, b) => {
+        const resA = parseInt(a.quality) || 0;
+        const resB = parseInt(b.quality) || 0;
+
+        if (resB !== resA) {
+            return resB - resA;
+        }
+
+        const typeA = a.type?.toLowerCase() === 'bluray' ? 1 : 0;
+        const typeB = b.type?.toLowerCase() === 'bluray' ? 1 : 0;
+        return typeB - typeA;
+    })[0];
+
+    const qualityLabel = bestTorrent
+        ? `${bestTorrent.quality} ${bestTorrent.type === 'bluray' ? 'BR' : 'WEB'}`
+        : '';
+
     return (
         <Link
             href={`/movie/${movie.imdb_code}`}
@@ -31,9 +53,11 @@ export default function MovieCard({ movie }: MovieCardProps) {
                             <span>{movie.rating}</span>
                         </div>
                     )}
-                    <div className="rounded-lg bg-red-600/90 px-2.5 py-1 text-[10px] font-black text-white backdrop-blur-xl border border-white/10 shadow-2xl uppercase tracking-tighter">
-                        {movie.year}
-                    </div>
+                    {qualityLabel && (
+                        <div className="rounded-lg bg-red-600/90 px-2.5 py-1 text-[10px] font-black text-white backdrop-blur-xl border border-white/10 shadow-2xl uppercase tracking-tighter">
+                            {qualityLabel}
+                        </div>
+                    )}
                 </div>
 
                 {/* Hover Gradient */}
@@ -54,6 +78,8 @@ export default function MovieCard({ movie }: MovieCardProps) {
                     <span className="flex items-center gap-1">
                         {movie.language}
                     </span>
+                    <span className="w-1 h-1 bg-gray-700 rounded-full" />
+                    <span>{movie.year}</span>
                     <span className="w-1 h-1 bg-gray-700 rounded-full" />
                     <span className="truncate">{movie.genres?.[0] || 'Action'}</span>
                 </div>
